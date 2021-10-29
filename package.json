@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "scripts": {
+    "watch": "pwa watch"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "miragejs": "^0.1.40",
+    "vue": "^2.6.12",
+    "vue-browser-acl": "file:../",
+    "vue-router": "^3.4.3",
+    "vue-template-compiler": "^2.6.12",
+    "vuex": "^3.5.1"
+  },
+  "devDependencies": {
+    "@pwa/cli": "^0.5.4",
+    "@pwa/preset-vue": "latest"
+  },
+  "browserslist": [
+    ">0.25%",
+    "last 1 version",
+    "not ie_mob 11",
+    "not ie 11",
+    "not dead"
+  ]
+}
