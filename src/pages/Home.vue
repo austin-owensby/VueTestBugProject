@@ -1,77 +1,71 @@
 <template>
   <div>
-    <section v-role:admin>
-      <h2>Admin commands</h2>
-      <p>
-        Here would be some admin commands. Note: `vue-browser-acl` is only a
-        plugin for helping you write ACL based logic in a more expressive way.
-        It isn't a replacement for other security meassures.
-      </p>
-    </section>
     <section>
-      <h2>Blog</h2>
+      <h1>Bug Test</h1>
+      <h2>Reproduction Steps</h2>
+      <ol>
+        <li>Log in as "admin".</li>
+        <li>Notice that all 3 buttons appear.</li>
+        <li>Clicking each button opens the respective dialog.</li>
+        <li>Clicking the close button in the dialog closes the dialog.</li>
+        <li>Logout and log back in as "non-admin".</li>
+        <li>Notice that now only button 2 appears since buttons 1 and 3 are authorized for admin only using <code>v-role:admin</code>.</li>
+        <li>Click Button 2 and notice an additional button appears.</li>
+        <li>Close the dialog and notice an 3rd button appears.</li>
+        <li>Repeat this process a few times and generate a few buttons.</li>
+        <li>Hover over the buttons and notice that the button is an admin button.</li>
+        <li>Click on the button and notice that it opens the admin dialog.</li>
+      </ol>
+      <button v-role:admin @click="showDialogA" title="Button 1 - Admin Only">Button 1 - Admin Only</button>
+      <button @click="showDialogB" title="Button 2">Button 2</button>
+      <button v-role:admin @click="showDialogC" title="Button 3 - Admin Only">Button 3 - Admin Only</button>
     </section>
-    <div v-can:create="'Post'">
-      <div>
-        <input type="text" v-model="postTitle" placeholder="Title" />
-      </div>
-      <div>
-        <textarea v-model="postBody"></textarea>
-      </div>
-      <div>
-        <button @click.prevent="publish">Publish</button>
-      </div>
-    </div>
-    <div>
-      <PostView
-        v-for="post in posts"
-        :key="post.id"
-        :post="post"
-        @delete="deletePost"
-      />
-      <div v-if="posts.length === 0">
-        No posts
-      </div>
-      <div v-if="busy">Busy...</div>
-      <div v-if="error">Error: {{ error }}</div>
-    </div>
+    <dialog-a v-if="dialogAVisible" @close="hideDialogA" />
+    <dialog-b v-if="dialogBVisible" @close="hideDialogB" />
+    <dialog-c v-if="dialogCVisible" @close="hideDialogC" />
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import PostView from '../components/Post.vue'
+import { mapGetters } from 'vuex'
+import DialogA from '../components/DialogA.vue';
+import DialogB from '../components/DialogB.vue';
+import DialogC from '../components/DialogC.vue';
 
 export default {
   components: {
-    PostView,
+    DialogA,
+    DialogB,
+    DialogC,
   },
-  data() {
+  data(){
     return {
-      post: null,
-      postTitle: '',
-      postBody: '',
-      postsPage: 1,
+      dialogAVisible: false,
+      dialogBVisible: false,
+      dialogCVisible: false,
     }
   },
   computed: {
-    ...mapGetters('post', ['posts', 'error', 'busy']),
     ...mapGetters('user', ['user']),
   },
-  created() {
-    this.fetchPosts()
-  },
   methods: {
-    ...mapActions('post', {
-      fetchPosts: 'fetch',
-      deletePost: 'delete',
-    }),
-    publish() {
-      this.$store.dispatch('post/create', {
-        title: this.postTitle,
-        body: this.postBody,
-        user: this.user.name,
-      })
+    showDialogA(){
+      this.dialogAVisible = true;
     },
-  },
+    showDialogB(){
+      this.dialogBVisible = true;
+    },
+    showDialogC(){
+      this.dialogCVisible = true;
+    },
+    hideDialogA(){
+      this.dialogAVisible = false;
+    },
+    hideDialogB(){
+      this.dialogBVisible = false;
+    },
+    hideDialogC(){
+      this.dialogCVisible = false;
+    },
+  }
 }
 </script>

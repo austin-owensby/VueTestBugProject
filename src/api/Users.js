@@ -1,5 +1,5 @@
 import User from '../models/User.js'
-import { faultyFetch } from './utils.js'
+import { fetch } from './utils.js'
 import debug from 'debug'
 
 const log = debug('demo:api:user')
@@ -14,7 +14,7 @@ export default class Users {
     return null
   }
   static auth(user) {
-    return faultyFetch('user', user).then(user => {
+    return fetch('user', user).then(user => {
       if (user) {
         window.sessionStorage.setItem('user', JSON.stringify(user))
       }
@@ -28,7 +28,7 @@ export default class Users {
   }
   static logout() {
     window.sessionStorage.removeItem('user')
-    return faultyFetch('user')
+    return fetch('user')
   }
   static reauthenticate() {
     const user = Users.get()

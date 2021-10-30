@@ -16,8 +16,7 @@
         required
       />
       <select v-model="userType">
-        <option value="group1">Group 1</option>
-        <option value="group2">Group 2</option>
+        <option value="nonadmin">Non-admin</option>
         <option value="admin">Admin</option>
       </select>
       <button @click.prevent="authenticate">Log in</button>
@@ -35,7 +34,7 @@ export default {
   data() {
     return {
       username: '',
-      userType: 'group1',
+      userType: 'nonadmin',
     }
   },
   computed: {
